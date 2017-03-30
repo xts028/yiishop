@@ -89,7 +89,7 @@ https://github.com/xts028/yiishop.git     我的  github
           Url:就是你在github上面创建后自动生成的;  选择add New/save; 确定
       ③在推送之前要提交  =>init 初始化; =>选择all ->commit;
       ④push 会出现账号和密码输入框; 输入你的github账号 密码
-      ⑤开发时  先拉取 在推送
+      ⑤开发时  先拉取pull  在推送gitcommit->push&commit;
 
 
 
