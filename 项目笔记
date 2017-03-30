@@ -1,0 +1,87 @@
+https://github.com/xts028/yiishop.git     我的  github
+一 url美化
+    ①在每个app下添加一个配置文件.htaccess
+    ②在每个app下的config配置文件中把urlManager的注释打开
+    ③转换为中文   在retrun=>[
+    'language'=>'zh-CN';
+    ]
+
+二 数据迁移 -创建数据库
+    运用yii migrate/create create_xxx_table   yii migrate/up;
+    在console控制台下migrations 下自动创建的xxx表中添加字段;
+
+三 当有多个状态只是  在model中添加一个静态属性_
+    public static $status_options=[1=>'新品',2=>'热销',3=>'精品'];
+    在展示视图文件中利用静态方法调用
+    <?php echo Model::status_options[$model->status]?>
+    在添加视图中    ['inline'=>true]这个是让这几个选项在一排
+    $form->field($brand,'status',['inline'=>true])->radioList(\backend\models\Brand::$status_options);
+
+四 图片的回显
+    <td><?=\yii\bootstrap\Html::img('@web/'.$brand->logo,['style'=>'width:50px'])?></td>
+    src=图片路径 '@web/'.$brand->logo;
+
+五 回收站的创建
+    把状态值为-1的放入回收站里 逻辑删的删除
+    $pagetotal = Brand::find()->where(['!=','status',0])->count();
+
+六 验证码的使用
+    ① 在model中设置一个code属性 public $code;并设置验证规则 ['code','captcha'],
+    ② 在sitecontroller 下的actions中添加 'captcha' => [
+                                                  'class' => 'yii\captcha\CaptchaAction',
+                                                  'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                                                  'width'=>200,
+                                                  'minLength'=>3,//设置验证码的多少
+                                                  'maxLength'=>3,
+                                              ],
+    ③在view中  使用echo $form->field($student,'code')->widget(\yii\captcha\Captcha::className(),[
+                           'template'=>'<div class="row"><div class="col-lg-2">{input}</div><div class="col-lg-3">{image}</div></div>'
+                           ]);
+    ④在添加保存的时候$model->save(false);//因为上面已经验证过了 不用在此验证了;
+
+七 分页
+    ①得到总条数 $pagetoal = Model::find()->count();
+    ②设置每页条数  $pagesize = 3;
+    ③实例化 $page = new Pagination(['totalCount'=>$pagetotal,'pageSize'=>$pagesize])
+    ④查出所有的数据 $datas= Model::find()->limit($page->limit)->offset($page->offset)->all();
+    ⑤分配数据 $this->render('list',['datas'=>$datas,'page'=>$page]);
+    ⑥在显示页面 <?php
+            echo \yii\widgets\LinkPager::widget([
+                   'pagination'=>$page,
+                'nextPageLabel'=>'下一页',
+                'prevPageLabel'=>'上一页'
+           ]);
+           ?>
+
+八 文件的上传
+    ①在model中定义一个属性 public $img_file 来上传图片(数据表中的字段img只是用来保存路径的与$img_file无关),
+      并验证属性的规则   ['logo_file','file','extensions'=>['gif','png','jpg','bmp']],//文件上传的后缀
+    ②$brand->logo_file=UploadedFile::getInstance($brand,'logo_file');使用上传文件类
+    ③获取文件名 $pageName= 'upload/brand'.uniqid().".".$brand->logo_file->extenion;
+    ④移动文件 $brand->logo_file->saveAs($pageName,false);false 不删除临时文件
+    ⑤保存 $brand->img=$pageName
+    ⑥提示信息\Yii::$app->session->setFlash('success','上传成功');
+    ⑦在添加页面 $model ,'logo_file'
+    ⑧图片的回显 <?php Html::img(src)?>
+
+九 用插件上传文件 uploadify
+    ①确定yii2框架是否composer安装的 如不是就需要更新yii2框架 在cmd 输入composer global require "fxp/composer-asset-plugin:^1.2.0"
+    ②在安装目录下 打开cmd   ---composer update -vvv;
+    ③按着yii2 uploadify 上的文档进行相应的操作;
+    ④需要在上传按钮出添加一个hidden框echo $form->field($brand,'logo')->hiddenInput();
+      把原来的自定义的logo_file全部取消掉 ;
+    ⑤接着在js处 找到隐藏域的id  $("hidden-id").val(data.fileUrl);(把值上传上去)
+    ⑥在隐藏域下方添加一个img 标签 并赋予id     ----做上传图片的回显
+      echo Html::img($brand->logo,['id'=>'img','style'=>'width:100px']);//把添加的图片显示出来
+      接着在js处 $('#img标签的id').attr('img',data.fileUrl);
+
+十  七牛云的使用 Yii2 七牛 按着文档来做  要使用composer 
+     自己定义组件 调用$qiniu = Yii::$app->qiniu;  使用之前要在配置文件中指定组件参数
+
+十一 词组形式的 如ArticleCategoryController 其视图层 目录为article-category;  数据表为article_category;
+
+十二 在一个控制器里的一个方法同时操作两张数据表
+      就要实例化两个响应的对象; 都要验证
+
+
+
