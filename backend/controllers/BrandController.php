@@ -201,12 +201,13 @@ class BrandController extends Controller
 //测试七牛云上传
     public function actionTest()
     {
-        $ak = '2OwTO4Y31pDRHwa9Ih36zUXK028E9bu1tvsq8SVg';
-        $sk = 'peVmZ2zzGhfZ7T-7wn4JeY-qHxkJJy-XJfPye8zd';
-        $domain = 'http://onkkj6xdz.bkt.clouddn.com/';
-        $bucket = 'yiishop';
-        $qiniu = new Qiniu($ak, $sk,$domain, $bucket);
+//        $ak = '2OwTO4Y31pDRHwa9Ih36zUXK028E9bu1tvsq8SVg';
+//        $sk = 'peVmZ2zzGhfZ7T-7wn4JeY-qHxkJJy-XJfPye8zd';
+//        $domain = 'http://onkkj6xdz.bkt.clouddn.com/';
+//        $bucket = 'yiishop';
+//        $qiniu = new Qiniu($ak, $sk,$domain, $bucket);
 //        $qiniu=\Yii::$app->qiniu;//qiniu是组件
+        $qiniu=\Yii::$app->qiniu;
         $key = time();
         $fileName=\Yii::getAlias('@webroot').'/upload/brand/91/ab/91ab72ae531d9e7eb3b6e4ca85aca98ee70850d5.jpg';
         $qiniu->uploadFile($fileName,$key);

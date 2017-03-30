@@ -76,7 +76,16 @@ https://github.com/xts028/yiishop.git     我的  github
       接着在js处 $('#img标签的id').attr('img',data.fileUrl);
 
 十  七牛云的使用 Yii2 七牛 按着文档来做  要使用composer 
-     自己定义组件 调用$qiniu = Yii::$app->qiniu;  使用之前要在配置文件中指定组件参数
+     ①自己定义组件 调用$qiniu = Yii::$app->qiniu;  使用之前要在配置文件中指定组件参数
+     ②自己定义一个Qiniu组件 常量 属性 来替换之前的变量
+     ③在main.php添加组件'qiniu'=>[
+                               'class'=>\backend\components\Qiniu::className(),
+                               'accessKey' => '2OwTO4Y31pDRHwa9Ih36zUXK028E9bu1tvsq8SVg',
+                                'secretKey'=> 'peVmZ2zzGhfZ7T-7wn4JeY-qHxkJJy-XJfPye8zd',
+                                'domain' => 'http://onkkj6xdz.bkt.clouddn.com/',
+                                'bucket' => 'yiishop',
+                               'region'=>\backend\components\Qiniu::HOST_HUANAN,
+     ④在控制器中直接调用$qiniu=\Yii::$app->qiniu;//qiniu组件名;                     ]
 
 十一 词组形式的 如ArticleCategoryController 其视图层 目录为article-category;  数据表为article_category;
 
