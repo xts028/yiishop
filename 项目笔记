@@ -83,5 +83,13 @@ https://github.com/xts028/yiishop.git     我的  github
 十二 在一个控制器里的一个方法同时操作两张数据表
       就要实例化两个响应的对象; 都要验证
 
+十三 版本控制 tortoiseGit 的使用
+      ①在github上面create一个项目名称
+      ②在要推送的目录上右键->git->commit ->Remote->manger:  Remote:origin;
+          Url:就是你在github上面创建后自动生成的;  选择add New/save; 确定
+      ③在推送之前要提交  =>init 初始化; =>选择all ->commit;
+      ④push 会出现账号和密码输入框; 输入你的github账号 密码
+      ⑤开发时  先拉取 在推送
+
 
 
