@@ -12,7 +12,7 @@ echo \yii\bootstrap\Html::submitButton('添加');
 \yii\bootstrap\ActiveForm::end();
 //加载js文件
 $this->registerJsFile('/ztree/js/jquery.ztree.core.js',['depends'=>\yii\web\JqueryAsset::className()]);
-//加载js 文件
+//加载代码
 $js=<<<EOT
      var zTreeObj;
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
@@ -37,10 +37,11 @@ $js=<<<EOT
     var zNodes ={$models};
         zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         zTreeObj.expandAll(true);//展开所有的分类 对象的属性
+        zTreeObj.selectNode(zTreeObj.getNodeByParam("id", "{$model->parent_id}", null));//选中节点
 EOT;
+//加载js代码
 $this->registerJs($js);
 ?>
-
 <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
 
 
