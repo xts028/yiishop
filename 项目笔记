@@ -101,5 +101,37 @@ https://github.com/xts028/yiishop.git     我的  github
       ⑤开发时  先拉取pull  在推送gitcommit->push&commit;
 
 十四 无限极分类; --嵌套集合 --ztree插件
-
+      ①按照yii2 nested set 在github上的文档进行处理
+      ②先按照文档要求 来做测试;
+      ③添加GoodsCategoryQuery.php组件 按照文档来建的
+      ④测试好了之后 就要引用ztree插件了也需要测试---只要是插件就要测试(ztree的使用要参照文档的要求).
+      ⑤在做添加时先添加父分类的if($model->parent_id == 0){
+           $model->makeRoot();//makeRoot()时nestedset自带的方法
+      ⑥在添加子分类 在父分类下添加 子分类的parent_id==父分类的id;
+               $cate=GoodsCategory::findOne(['id'=>$model->parent_id]);
+                         $model->prependTo($cate);
+      ⑦添加顶级分类项    利用ztree插件把已添加的所有分类展示出来  var zNodes ={$models};
+          $models=GoodsCategory::find()->all();//把已添加的所有分类展示出来
+                  $models[]=['id'=>0,'parent_id'=>0,'name'=>'顶级分类'];//用数组的形式--添加顶级分类
+                  $models=Json::encode($models);//转换为json格式
+                  //展示视图;
+                  return $this->render('add',['model'=>$model,'models'=>$models]);
+      ⑧添加js文件   jquery不用加载-yii已经自加载了
+        $this->registerJsFile('/ztree/js/jquery.ztree.core.js',['depends'=>\yii\web\JqueryAsset::className()]);
+      ⑨加载js代码 $js=<<<EOT  EOT;
+                 $this->registerJs($js);执行该js代码
+      ⑩选中状态修改时  用try{}catch (Exception $e){
+                      //                    \Yii::$app->session->setFlash('danger',$e->getMessage());
+                                          $model->addError('parent_id',$e->getMessage());
+                                      }
+         zTreeObj.selectNode(zTreeObj.getNodeByParam("id", "{$model->parent_id}", null));//选中节点
+      ⑪展示页面 做分类隐藏(有子类的) 展开
+           toggleClass()当有此类时删除 无此类时添加的
+              $(this).toggleClass("glyphicon glyphicon-circle-arrow-down");
+                  //当前图标删除后就添加要改变的图标
+                  $(this).toggleClass("glyphicon glyphicon-circle-arrow-up");
+         判断 当前的左右节点 和 tree
+               if(tr_tree==current_tree && tr_lft > current_lft && tr_rgt < current_rgt){
+                        $(this).fadeToggle();
+                     }
 
