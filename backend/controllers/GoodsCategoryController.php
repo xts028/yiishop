@@ -115,13 +115,21 @@ class GoodsCategoryController extends \yii\web\Controller
     /**
      * 删除
      */
-//    public function actionDelete($id)
-//    {
+    public function actionDelete()
+    {
 //        $model = GoodsCategory::findOne(["id"=>$id]);
-////        var_dump($model);
-//        $model->delete();
+        $models=GoodsCategory::find()->all();
+           foreach ($models as $row=>$v){
+//               if($model->id == $row['parent_id']){
+//                   echo "此分类下有子分类不能删除";
+//               }
+               var_dump($v['id']);
+//               $model->delete();
+
+//           var_dump($row);
+       }
 //        return $this->render(['goods-category/list']);
-//
-//        }
+
+        }
 
 }

@@ -1,7 +1,7 @@
 <?php
 $form =\yii\bootstrap\ActiveForm::begin();
 echo $form->field($article,'name');
-echo $form->field($article,'article_category_id');
+echo $form->field($article,'article_category_id')->dropDownList(\backend\models\Article::getArticleCategoryOptions());
 echo $form->field($article,'intro')->textarea();
 echo $form->field($article,'status',['inline'=>true])->radioList(\backend\models\Article::$status_options);
 echo $form->field($article,'sort');

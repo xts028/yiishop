@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "article".
@@ -64,5 +65,14 @@ class Article extends \yii\db\ActiveRecord
     public function getArticleCategory()
     {
         return $this->hasOne(ArticleCategory::className(),['id'=>'article_category_id']);
+    }
+    /**
+     * 添加文章分类的下拉列表
+     */
+    public static function getArticleCategoryOptions()
+    {
+        //把拿到的所有数据变成数组;
+        $articlecates = ArticleCategory::find()->asArray()->all();
+        return ArrayHelper::map($articlecates,'id','name');
     }
 }

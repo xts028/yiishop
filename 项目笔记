@@ -134,4 +134,14 @@ https://github.com/xts028/yiishop.git     我的  github
                if(tr_tree==current_tree && tr_lft > current_lft && tr_rgt < current_rgt){
                         $(this).fadeToggle();
                      }
-
+      ⑫注意转类型 var tr_lft=parseInt($(this).attr("data_lft"));  用parseInt()来转类型;
+十五  下拉框
+          /**
+         * @return array
+         * 下拉框   静态方法public static function
+         */
+        public static function getBrandOptions()
+        {
+             $brands=Brand::find()->asArray()->all();
+             return ArrayHelper::map($brands,'id','name');
+        }
