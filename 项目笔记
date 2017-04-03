@@ -145,3 +145,34 @@ https://github.com/xts028/yiishop.git     我的  github
              $brands=Brand::find()->asArray()->all();
              return ArrayHelper::map($brands,'id','name');
         }
+十六 登录 自动登录
+     ①对要进行登录验证的数据表进行身份验证
+           Admin extends \yii\db\ActiveRecord implements IdentityInterface
+           然后把IdentityInterface中的方法全部拿出来 把需要重写的进行重写;
+     ②在config组件中'user' => [
+                            'identityClass' => \backend\models\Admin::className(),
+                            'enableAutoLogin' => true,
+                            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+                        ],
+     ③进行数据的验证 先用用户名进行查询 查询有结果 就进行密码的验证(数据库的密码 和表单模型中传过来的密码)
+         $ps = \Yii::$app->security->validatePassword($this->password, $usr->password);
+         比对成功就保存session
+           \Yii::$app->user->login($usr);
+
+
+     自动登录
+       需要 public function getAuthKey()
+             {
+                return $this->authKey;
+             }
+             public function validateAuthKey($authKey)
+                 {
+                     return $this->authKey=$authKey;
+                 }
+       需要添加remember字段 public $rememberMe = false; 默认为不打勾
+       rules [['rememberMe', 'boolean'],//添加remember]
+       保存session是添加一个cookie过期时间
+       \Yii::$app->user->login($usr,$this->rememberMe ? 3600 * 24 * 30 : 0);
+
+       退出登录
+       \Yii::$app->user->logout();
