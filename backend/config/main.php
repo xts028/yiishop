@@ -17,9 +17,11 @@ return [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
+
         'user' => [
             'identityClass' => \backend\models\Admin::className(),
             'enableAutoLogin' => true,
+            'loginUrl' => ['admin/login'],
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
@@ -52,8 +54,7 @@ return [
              'domain' => 'http://onkkj6xdz.bkt.clouddn.com/',
              'bucket' => 'yiishop',
             'region'=>\backend\components\Qiniu::HOST_HUANAN,
-        ]
-
+        ],
 
     ],
     'params' => $params,

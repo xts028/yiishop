@@ -11,6 +11,7 @@ namespace backend\controllers;
 
 use backend\models\ArticleCategory;
 use yii\data\Pagination;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Request;
 
@@ -98,4 +99,25 @@ class ArticleCategoryController extends Controller
             return $this->redirect(['article-category/index']);
         }
     }
+//    public function behaviors()
+//    {
+//        return [
+//            'ACF'=>[
+//                'class'=>AccessControl::className(),
+//                'only'=>[],//要过滤那些 不写就是全部
+//                'rules'=>[
+//                    [
+//                        'allow'=>true,
+//                        'actions'=>['login'],
+//                        'roles'=>['?']//未认证
+//                    ],
+//                    [
+//                        'allow'=>true,
+//                        'actions'=>['add','edit','del','index'],//认证后允许的操作
+//                        'roles'=>['@']//已认证(登录)
+//                    ]
+//                ]
+//            ]
+//        ];
+//    }
 }

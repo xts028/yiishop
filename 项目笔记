@@ -176,3 +176,31 @@ https://github.com/xts028/yiishop.git     我的  github
 
        退出登录
        \Yii::$app->user->logout();
+
+十七 权限 ①存取控制过滤器ACF ②基于角色的权限控制RBAC
+
+     ①ACF简单过滤器 在那个要用的控制器下添加behavoirs(){
+     return [
+                 'ACF'=>[
+                     'class'=>AccessControl::className(),
+                     'only'=>[],//要过滤那些 不写就是全部
+                     'rules'=>[
+                         [
+                             'allow'=>true,
+                             'actions'=>['login'],
+                             'roles'=>['?']//未认证
+                         ],
+                         [
+                             'allow'=>true,
+                             'actions'=>['add'],//认证后允许的操作
+                             'roles'=>['@']//已认证(登录)
+                         ]
+                     ]
+                 ]
+             ];
+     }
+
+     ②RBAC 在console平台下的mian.php中的components下 添加'authManager'=>[
+                                                           'class'=>\yii\rbac\DbManager::className(),
+                                                       ],
+     ③④⑤⑥⑦⑧⑨⑩
