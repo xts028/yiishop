@@ -35,17 +35,24 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => '文章', 'url' => ['/article/list']],
-        ['label' => '文章分类', 'url' => ['/article-category/index']],
-        ['label' => '品牌', 'url' => ['/brand/index']],
-        ['label' => '商品', 'url' => ['/goods-category/list']],
-        ['label' => '商品', 'url' => ['/goods/list']],
-        ['label' => '用户', 'url' => ['/admin/list']],
-        ['label' => '登录', 'url' => ['/admin/login']]
+//        [
+//            'label' => '文章',
+//            'items'=>[
+//                       ['label' => '文章添加', 'url' => ['/article/add']],
+//                       ['label' => '文章修改', 'url' => ['/article/edit']]
+//                      ],
+//        ],
+//        ['label' => '文章分类', 'url' => ['/article-category/index']],
+//        ['label' => '品牌', 'url' => ['/brand/index']],
+//        ['label' => '商品分类', 'url' => ['/goods-category/list']],
+//        ['label' => '商品', 'url' => ['/goods/list']],
+//        ['label' => '用户', 'url' => ['/admin/list']],
+//        ['label' => '登录', 'url' => ['/admin/login']]
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '退出', 'url' => ['/admin/logout']];
     } else {
+        $menuItems=
         $menuItems[] = '<li>'
             . Html::beginForm(['/admin/logout'], 'post')
             . Html::submitButton(

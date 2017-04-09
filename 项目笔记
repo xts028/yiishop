@@ -178,6 +178,7 @@ https://github.com/xts028/yiishop.git     我的  github
        \Yii::$app->user->logout();
 
 十七 权限 ①存取控制过滤器ACF ②基于角色的权限控制RBAC
+     权限开发文档http://www.yiichina.com/doc/guide/2.0/security-authorization#rbac
 
      ①ACF简单过滤器 在那个要用的控制器下添加behavoirs(){
      return [
@@ -200,7 +201,68 @@ https://github.com/xts028/yiishop.git     我的  github
              ];
      }
 
-     ②RBAC 在console平台下的mian.php中的components下 添加'authManager'=>[
+     ②RBAC 在common平台下的mian.php中的components下 添加'authManager'=>[
                                                            'class'=>\yii\rbac\DbManager::className(),
                                                        ],
-     ③④⑤⑥⑦⑧⑨⑩
+              命令行:     yii migrate --migrationPath=@yii/rbac/migrations  各关联表的数据迁移
+     ③添加权限  $authManager = Yii::$app->authManager;
+                 $permission = $authManager->createPermission($model->name);
+                 $authManager->add($permission);
+     ④展示权限 $authManager = \Yii::$app->authManager;
+                $permissions = $authManager->getPermissions();
+     ⑤删除权限 根据传过来的$name 来找到permission
+
+     ⑥创建角色  在RoleForm中添加一个属性 public $permissions=[];
+                  用一个静态方法在视图中直接调用 checkBoxList(RoleForm::getPermission());
+                  public function static getPermissions(){
+                     $authManager = Yii::$app->authManager;
+                     $permissions = $authManager->getPermissions();
+                     return ArrayHelpr::map($permissions,'name','description');
+                  }
+            在控制器中 $authManager = \Yii::$app->authManager;
+                       $role = $authManager->createRole($model->name);
+                       $role->description = $model->description;
+                       $authManager->add($role);//保存role
+                       //表单中传过来的值
+                       foreach($model->permissions as $permission){
+                           //关联role和permission
+                          $authManager->addChild($role,$authManager->getPermission($permission));
+                       }
+     ⑦用户与角色关联  用assign();  在用户Model中 public $roles=[];
+                      /**
+                       * 角色下拉列表
+                       */
+                      public static function getRoleOptions()
+                      {
+                          $roles = \Yii::$app->authManager->getRoles();
+
+                          return ArrayHelper::map($roles,'name','name');
+                      }
+        在添加用户时$authManager = \Yii::$app->authManager;
+                              //得到所有的roles
+                              foreach ($model->roles as $role){
+                                  $role = $authManager->getRole($role);
+                                  $authManager->assign($role,$model->id);
+                              }
+     ⑧⑨⑩
+
+十八 自定义验证方法;
+十九 菜单与权限关联;
+      ①
+二十 添加filter过滤器
+
+
+
+
+
+
+前台页面
+一
+二
+三
+四
+五
+六
+七
+八
+九
